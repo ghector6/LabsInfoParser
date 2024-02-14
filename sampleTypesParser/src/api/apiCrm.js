@@ -1,7 +1,7 @@
-import axios from 'axios';
 
+const axios = require('axios');
 const API = process.env.NEXT_PUBLIC_API_CRM;
 
-export default axios.create({
+module.exports = axios.create({
   baseURL: `${API}/api`
 });
