@@ -25,7 +25,7 @@ async function processRow(row) {
   try {
     console.log(postRequest);
   } catch (error) {
-    console.error(error, "Error creating section");
+    await createSection(postRequest);
   }
 }
 
