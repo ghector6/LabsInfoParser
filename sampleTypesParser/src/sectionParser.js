@@ -16,16 +16,16 @@ function parseSection(filePath) {
 async function processRow(row) {
   const data = row.split(",");
   const postRequest = {
-    data: {
-      sectionName: data[0],
-      prefix: "",
-      status: "created",
+    "data": {
+      "sectionName": data[0],
+      "prefix": "",
+      "status": "created",
     },
   };
   try {
-    console.log(postRequest);
-  } catch (error) {
     await createSection(postRequest);
+  } catch (error) {
+    console.error(error, "Error creating section");
   }
 }
 
