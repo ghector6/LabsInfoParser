@@ -1,5 +1,7 @@
 const SectionService = require("./services/SectionService");
 const getSections = SectionService.getSections;
+const SampleTypeService = require("./services/SampleTypeService");
+const getTypeSamples = SampleTypeService.getTypeSamples;
 
 //Function to get sections data
 async function getSectionsData() {
@@ -27,3 +29,22 @@ async function getSectionId(sectionName) {
   const sectionsHashMap = JSON.parse(await getSectionsHashMap());
   return sectionsHashMap[sectionName];
 }
+//Function to get sampleTypes data
+async function getSampleTypesData() {
+  const sampleTypes = await getTypeSamples();
+  return sampleTypes.data.data
+}
+async function getSampleTypeHashMap() {
+  const samples = await getSampleTypesData();
+  const samplesHashMap = {};
+  samples.forEach((sample) => {
+    let normalizedSampleDescription = sample.attributes.description.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    let normalizedSampleTube = sample.attributes.tube.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    samplesHashMap[`${normalizedSampleDescription}-${normalizedSampleTube}`] = sample.id;
+  });
+  return JSON.stringify(samplesHashMap);
+}
+
+getSampleTypeHashMap().then((samplesHashMap) => {
+  console.log(samplesHashMap);
+});
