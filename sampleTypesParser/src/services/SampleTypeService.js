@@ -12,7 +12,7 @@ const createSampleType = (data) => {
 
 const getTypeSamples = () => {
     return apiCrm({
-        url: `${PATH}?pagination[start]=0&pagination[limit]=100`,
+        url: `${PATH}?pagination[limit]=-1`,
         method: 'GET'
     });
 }
