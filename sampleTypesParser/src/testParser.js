@@ -16,9 +16,9 @@ async function getSectionsHashMap() {
   });
   return JSON.stringify(sectionsHashMap);
 }
-getSectionsHashMap().then((sectionsHashMap) => {
-  console.log(sectionsHashMap);
-});
+// getSectionsHashMap().then((sectionsHashMap) => {
+//   console.log(sectionsHashMap);
+// });
 //function that compares a received sectionName and returns the sectionId
 async function getSectionId(sectionName) {
   // Normalize the string to be lowercased and remove accents or weird characters
