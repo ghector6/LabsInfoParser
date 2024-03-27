@@ -10,4 +10,14 @@ const createSampleType = (data) => {
     })
 }
 
-module.exports = createSampleType;
+const getTypeSamples = () => {
+    return apiCrm({
+        url: `${PATH}?populate=*`,
+        method: 'GET'
+    });
+}
+
+module.exports = {
+    createSampleType,
+    getTypeSamples
+}
