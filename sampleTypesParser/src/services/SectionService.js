@@ -9,4 +9,14 @@ const createSection = (data) => {
     data: data,
   });
 };
-module.exports = createSection;
+
+const getSections = () => {
+  return apiCrm({
+    url: `${PATH}?populate=*`,
+    method: "GET",
+  }); 
+}
+module.exports = {
+  createSection,
+  getSections,
+}
