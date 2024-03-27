@@ -40,11 +40,20 @@ async function getSampleTypeHashMap() {
   samples.forEach((sample) => {
     let normalizedSampleDescription = sample.attributes.description.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
     let normalizedSampleTube = sample.attributes.tube.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
-    samplesHashMap[`${normalizedSampleDescription}-${normalizedSampleTube}`] = sample.id;
+    samplesHashMap[`${normalizedSampleDescription}${normalizedSampleTube}`] = sample.id;
   });
   return JSON.stringify(samplesHashMap);
 }
+async function getSampleTypeId(catalogInput){
+  catalogInput = catalogInput.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  const samplesHashMap = JSON.parse(await getSampleTypeHashMap());
+  return samplesHashMap[catalogInput];
+}
 
-getSampleTypeHashMap().then((samplesHashMap) => {
-  console.log(samplesHashMap);
-});
+getSampleTypeId("Suero - Tubo tapón rojo").then((sampleTypeId) => {
+  console.log(sampleTypeId);
+}
+);
+const input = "Suero - Tubo tapón rojo";
+const foo = input.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+console.log(foo);
