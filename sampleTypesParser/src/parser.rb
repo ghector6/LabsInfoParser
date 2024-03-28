@@ -7,15 +7,44 @@ data =hashMap["data"]
 
 prevCode = 'HOla'
 
+def normalizeGender(gender)
+  case gender&.downcase&.strip
+  when "femenino"
+    "F"
+  when "masculino"
+    "M"
+  when "indistinto"
+    "OTHER"
+  else
+    ""
+  end
+end
+
+def normalizeUnit(unit)
+  case unit&.downcase&.strip
+  when "años"
+    "year"
+  when "meses"
+    "month"
+  when "dias"
+    "day"
+  else
+    ""
+  end
+end
+
+
 def rankToList(test)
   
-  gender = test["rankGender"]
-  unit = test["rankUnity"]
-  minAge = test["rankMinAge"]
-  maxAge = test["rankMaxAge"]
-  minRef = test["minRef"]
-  maxRef = test["maxRef"]
-  [{gender:, unit:, minAge:, maxAge:, minRef:, maxRef:}]
+  gender = normalizeGender(test["rankGender"])
+  # F M BOTH OTHER
+  unit = normalizeUnit(test["rankUnity"])
+  # YEAR MONTH DAY
+  minAge = test["rankMinAge"].to_f
+  maxAge = test["rankMaxAge"].to_f
+  minRef = test["minRef"].to_f
+  maxRef = test["maxRef"].to_f
+  [{gender:, unit:, minAge:, maxAge:, :minReference => minRef, :maxReference => maxRef}]
 end
 
 
