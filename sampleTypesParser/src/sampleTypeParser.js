@@ -10,7 +10,6 @@ function parseSampleTypes(filePath) {
       return;
     }
     const test = data.trim().split('\n');
-    console.log(test);
     //test.map(processRow);
   });
 }
