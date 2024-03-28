@@ -1,16 +1,8 @@
-const {getMethodId} = require("./services/MethodService");
-const {getSectionId} = require("./services/SectionService");
-const {getSampleTypeId} = require("./services/SampleTypeService");
-
-// getMethodId("Ion Selectivo").then((methodId) => {
-//   console.log(methodId);
-// });
-// getSectionId("Quimica clinica").then((sectionId) => {
-//   console.log(sectionId);
-// });
-// getSampleTypeId("Suero - Tubo tapón rojo").then((sampleTypeId) => {
-//   console.log(sampleTypeId);
-// });
+const { getMethodId } = require("./services/MethodService");
+const { getSectionId } = require("./services/SectionService");
+const { getSampleTypeId } = require("./services/SampleTypeService");
+const { createTag } = require("./services/TagService");
+const { getExternalLabId } = require("./services/externalLabsService");
 
 let data = {
   data: [
@@ -20,7 +12,7 @@ let data = {
       clave: "",
       description:
         "La glucosa es el analito más frecuentemente solicitado en todas las pruebas de química clínica. Útil en el diagnóstico de los trastornos del metabolismo de los hidratos de carbono; tales como diabetes mellitus, hipoglicemia neonatal, hipoglicemia idiopática, carcinoma de los islotes pancreáticos, etc. Se encuentra disminuida en diferentes escenarios clínicos como pancreatitis, hiperinsulinismo, ayuno, mala absorción, entre otras.",
-      " section": "Quimica Clinica",
+      section: "Quimica Clinica",
       typeSample: "Suero - Tubo tapón rojo",
       method: "Espectrofotometría",
       printMethod: "imprimir solo cuando el parametro se venda individual",
@@ -36,27 +28,25 @@ let data = {
       formula: "",
       unity: "mg/dL",
       typeResult: "Numerico",
-      "normalityValueType   ": "Texto libre",
+      normalityValueType: "Texto libre",
       Decimal: "2",
       processingDays: "0",
       processingHours: "3",
       processingMinutes: "0",
-      Etiqueta: "Glu",
-      "Tipo de muestra": "Suero-Tubo tapón rojo",
-      "¿Agrupar?": "Si",
-      Sexo: "",
-      Unidad: "",
-      "Edad minima": "",
-      "Edad Maxima": "",
-      "Referencia minima": "",
-      "Referencia Maxima": "",
-      normalityValueText: "701.00 - 100.00",
+      tag: "Glu",
+      tagSampleType: "Suero-Tubo tapón rojo",
+      tagGroup: "Si",
+      rankGender: "",
+      rankUnity: "",
+      rankMinAge: "",
+      rankMaxAge: "",
+      minRef: "",
+      maxRef: "",
+      normalityValueText: "701.00 - 100.00", //array
       labInstructions:
         "Centrifugar 30 minutos despues de haber recolectado la muestra y dentro de las 2 horas de la extracción",
       patientInstructions: "Ayuno de 8 a 12 horas",
-      "Tipo de muestra_1": "Suero",
       sampleVolume: "1ml",
-      "Tipo de contenedor": "Tubo tapon rojo",
       sampleStability:
         "Muestra separada del paquete globular (globulos rojos)\nAmbiente (20 a 25°C):  4 horas\nRefrigerada (2 a 8°c) : 24 horas",
       rejectionCriteria:
@@ -69,10 +59,15 @@ let data = {
   ],
 };
 
+//Function that creates a payload  in order to create a test in the CRM but check first if method, section, typeSample, externalLabs, and create the tags, and human ranks then send the created tagId, and human_rankId in the payload
 
-//Function that creates a payload to create a test in the CRM but check first if method exists and if so, assigns the method id to the test
-
-const createTest = async () => {
+const createTest = async (data) => {
+    debugger
     let test = data.data[0];
+    debugger
     let methodId = await getMethodId(test.method);
+    debugger
+    console.log(methodId);
 }
+
+createTest(data);
