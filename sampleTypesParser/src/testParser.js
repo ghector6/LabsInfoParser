@@ -58,18 +58,18 @@ let data = {
     },
   ],
 };
-
 //Function that creates a payload  in order to create a test in the CRM but check first if method, section, typeSample, externalLabs, and create the tags, and human ranks then send the created tagId, and human_rankId in the payload
 
 const createTest = async (data) => {
-  let test = data.data[0];
+  let test = {};
+  test = {...test, ...data.data[0]}
   let methodId = await getMethodId(test.method);
   let sectionId = await getSectionId(test.section);
   let sampleTypeId = await getSampleTypeId(test.typeSample);
   let externalLabId = await getExternalLabId(test.externalLabs);
   const tagPayload = {
     name: test.tag,
-    typeSample: await getSampleTypeId(test.tagSampleType),
+    typeSample: sampleTypeId,
     group: test.tagGroup === "Si" ? true : false,
   };
   try {
@@ -81,21 +81,22 @@ const createTest = async (data) => {
     return null;
   }
   //Human Rank payload will be created only if human rank fields are not empty
-    if (test.rankGender !== "" || test.rankUnity !== "") {
-      const humanRankPayload = {
-      gender: test.rankGender,
-      unity: test.rankUnity,
-      minAge: test.rankMinAge,
-      maxAge: test.rankMaxAge,
-      minReference: test.minRef,
-      maxReference: test.maxRef,
-    }
-    console.log(humanRankPayload);
-    }else{
-      console.log('No human rank fields')
-    }
+  const humanRankPayload = {
+    gender: test.rankGender,
+    unity: test.rankUnity,
+    minAge: test.rankMinAge,
+    maxAge: test.rankMaxAge,
+    minReference: test.minRef,
+    maxReference: test.maxRef,
+  };
+  try {
+    const humanRankResponse = await createHumanRank(humanRankPayload);
+    return humanRankResponse.data.data.id;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
 }
-
 createTest(data);
       
 
