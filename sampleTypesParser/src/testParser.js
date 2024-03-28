@@ -62,12 +62,22 @@ let data = {
 //Function that creates a payload  in order to create a test in the CRM but check first if method, section, typeSample, externalLabs, and create the tags, and human ranks then send the created tagId, and human_rankId in the payload
 
 const createTest = async (data) => {
-    debugger
-    let test = data.data[0];
-    debugger
-    let methodId = await getMethodId(test.method);
-    debugger
-    console.log(methodId);
-}
+  let test = data.data[0];
+  let methodId = await getMethodId(test.method);
+  let sectionId = await getSectionId(test.section);
+  let sampleTypeId = await getSampleTypeId(test.typeSample);
+  let externalLabId = await getExternalLabId(test.externalLabs);
+  const tagPayload = {
+    name: test.tag,
+    sampleType: await getSampleTypeId(test.tagSampleType),
+    group: test.tagGroup === "Si" ? true : false, 
+  };
+  console.log(tagPayload);
+};
 
 createTest(data);
+
+
+
+      
+
