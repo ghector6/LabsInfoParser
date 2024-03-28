@@ -69,14 +69,19 @@ const createTest = async (data) => {
   let externalLabId = await getExternalLabId(test.externalLabs);
   const tagPayload = {
     name: test.tag,
-    sampleType: await getSampleTypeId(test.tagSampleType),
-    group: test.tagGroup === "Si" ? true : false, 
+    typeSample: await getSampleTypeId(test.tagSampleType),
+    group: test.tagGroup === "Si" ? true : false,
   };
-  console.log(tagPayload);
+  try {
+    const tagResponse = await createTag(tagPayload);
+    console.log(tagResponse.data.data.id);
+  }catch(err){
+    console.log(err)
+    return null
+  }
 };
 
 createTest(data);
-
 
 
       
