@@ -73,16 +73,29 @@ const createTest = async (data) => {
     group: test.tagGroup === "Si" ? true : false,
   };
   try {
-    const tagResponse = await createTag(tagPayload);
-    console.log(tagResponse.data.data.id);
-  }catch(err){
-    console.log(err)
-    return null
+    console.log(tagPayload);
+    // const tagResponse = await createTag(tagPayload);
+    //return tagResponse.data.data.id;
+  } catch (err) {
+    console.log(err);
+    return null;
   }
-};
+  //Human Rank payload will be created only if human rank fields are not empty
+    if (test.rankGender !== "" || test.rankUnity !== "") {
+      const humanRankPayload = {
+      gender: test.rankGender,
+      unity: test.rankUnity,
+      minAge: test.rankMinAge,
+      maxAge: test.rankMaxAge,
+      minReference: test.minRef,
+      maxReference: test.maxRef,
+    }
+    console.log(humanRankPayload);
+    }else{
+      console.log('No human rank fields')
+    }
+}
 
 createTest(data);
-
-
       
 
