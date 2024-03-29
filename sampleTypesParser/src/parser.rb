@@ -26,7 +26,7 @@ def normalizeUnit(unit)
     "year"
   when "meses"
     "month"
-  when "dias"
+  when "dias", "días"
     "day"
   else
     ""

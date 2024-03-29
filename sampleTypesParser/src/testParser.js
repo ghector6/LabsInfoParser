@@ -12,14 +12,13 @@ const fileData = require("./data/catalogoTestQC-Condensado.json")
 //Function that creates a payload  in order to create a test in the CRM but check first if method, section, typeSample, externalLabs, and create the tags, and human ranks then send the created tagId, and human_rankId in the payload
 
 const createTestData = async (data) => {
-  console.log(data.method)
   let methodId= null
   try {
     methodId = await getMethodId(data.method);
   } catch (err) {
     console.log(err, "EMthod err");
   }
-  const sectionId = await getSectionId(data.section); 
+  const sectionId = await getSectionId(data.section);
   const sampleTypeId = await getSampleTypeId(data.typeSample);
   // const externalLabId = await getExternalLabId(data.externalLabs);
   let tagPayload = {
@@ -52,18 +51,37 @@ const createTestData = async (data) => {
     })
     ranks_ids = await Promise.all(ranksPromises)
   }
-  console.log(ranksPromises)
+  //ranks_id will be an array of ids or null if there was an error creating the human rank
 
   const payload = {
     ...data,
     method: methodId,
+    clave: data.clave === null ? "" : data.clave,
+    antibiogram: data.antibiogram === null ? "" : data.antibiogram,
+    exemptIva: data.exemptIva === null ? "" : data.exemptIva,
+    cost: data.cost === null ? "" : data.cost,
+    notes: data.notes === null ? "" : data.notes,
+    printNote: data.printNote === null ? "" : data.printNote,
+    formula: data.formula === null ? "" : data.formula,
+    typeNormality: data.typeNormality === null ? "" : data.typeNormality,
+    normalityDescription: data.normalityDescripton === null ? ""  : data.normalityDescription,
+    patientNotes: data.patientNotes === null ? "" : data.patientNotes,
+    criticalConcentration: data.criticalConcentration === null ? "" : data.criticalConcetration,
+    resultUnit: data.resultUnit === null ? "" : data.resultUnit,
+    concentrationUnit: data.concentrationUnit === null ? "" : data.concentrationUnit,
+    comissions: data.comissions === null ? "" : data.comissions,
+    lowerLimit: data.lowerLimit === null ? "" : data.lowerLimit,
+    upperLimit: data.upperLimit === null ? "" : data.upperLimit,
     section: sectionId,
     typeSample: sampleTypeId,
     individualSale: data.individualSale === "Si" ? true : false,
     gender: data.gender,
     // externalLabs: externalLabId,
     humanRanks: ranks_ids,
-    tags: [tagID]
+    tags: [tagID],
+    processingDays: data.processingDays ? parseInt(data.processingDays) : null,
+    processingHours: data.processingHours ? parseInt(data.processingHours) : null,
+    processingMinutes: data.processingMinutes ? parseInt(data.processingMinutes) : null,
   }
   delete payload["rankGender"]
   delete payload["rankUnity"]
@@ -75,9 +93,10 @@ const createTestData = async (data) => {
   delete payload["typeGroup"]
   delete payload["tag"]
   delete payload["tagGroup"]
+  delete payload["ranks"]
   try {
     response = await createTest(payload)
-    console.log(response.data)
+    console.log(response.status)
   } catch (err) {
     console.error(JSON.stringify(err, null, 2))
   }
@@ -85,8 +104,7 @@ const createTestData = async (data) => {
 
 
 const keys = Object.keys(fileData)
-const slicedData = keys.slice(0,4)
-slicedData.forEach((value) => {
-  createTestData(fileData[value])
+const slicedData = keys
+slicedData.forEach(async (value, index) => {
+  await createTestData(fileData[value])
 })
-// createTest(data)
