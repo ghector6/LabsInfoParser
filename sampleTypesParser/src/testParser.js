@@ -18,7 +18,7 @@ const createTestData = async (data) => {
   } catch (err) {
     console.log(err, "EMthod err");
   }
-  const sectionId = await getSectionId(data.section);
+  const sectionId = await getSectionId(data.section); 
   const sampleTypeId = await getSampleTypeId(data.typeSample);
   // const externalLabId = await getExternalLabId(data.externalLabs);
   let tagPayload = {
@@ -56,22 +56,6 @@ const createTestData = async (data) => {
   const payload = {
     ...data,
     method: methodId,
-    clave: data.clave === null ? "" : data.clave,
-    antibiogram: data.antibiogram === null ? "" : data.antibiogram,
-    exemptIva: data.exemptIva === null ? "" : data.exemptIva,
-    cost: data.cost === null ? "" : data.cost,
-    notes: data.notes === null ? "" : data.notes,
-    printNote: data.printNote === null ? "" : data.printNote,
-    formula: data.formula === null ? "" : data.formula,
-    typeNormality: data.typeNormality === null ? "" : data.typeNormality,
-    normalityDescription: data.normalityDescripton === null ? ""  : data.normalityDescription,
-    patientNotes: data.patientNotes === null ? "" : data.patientNotes,
-    criticalConcentration: data.criticalConcentration === null ? "" : data.criticalConcetration,
-    resultUnit: data.resultUnit === null ? "" : data.resultUnit,
-    concentrationUnit: data.concentrationUnit === null ? "" : data.concentrationUnit,
-    comissions: data.comissions === null ? "" : data.comissions,
-    lowerLimit: data.lowerLimit === null ? "" : data.lowerLimit,
-    upperLimit: data.upperLimit === null ? "" : data.upperLimit,
     section: sectionId,
     typeSample: sampleTypeId,
     individualSale: data.individualSale === "Si" ? true : false,
