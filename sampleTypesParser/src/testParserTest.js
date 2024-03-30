@@ -15,6 +15,26 @@ const normalizeCode = (code) => {
   return `QC${newCode}`;
 }
 
+const key_formatter = (key) => {
+  const normalizedKey = key.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const wordsList = normalizedKey.toLowerCase().trim().replace(/[^a-zA-Z0-9\ ]/g, '').split(" ");
+  const formattedKey = wordsList.map((word) => {
+    if (word.startsWith('minuto')) {
+      return 'min'
+    } else if (word.startsWith('hora') && word.length <= 5) {
+      return 'hr'
+    } else if (word.startsWith('día') || word.startsWith('dia')) {
+      return 'dia'
+    } else if (word.startsWith('segundo')) {
+      return 'seg'
+    } else {
+      return word.slice(0, 3)
+    }
+  }).join('')
+  return formattedKey
+}
+console.log(key_formatter('GLUCOSA PLASMATICA EN AYUNO (Screen)'))
+
 const capitalizeString = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
@@ -66,7 +86,7 @@ const testCharge = async (data) => {
     printMethod: data.printMethod ? capitalizeString(data.printMethod) : "",
     typeSample: sampleTypeId,
     rejectionCriteria: data.rejectionCriteria ? data.rejectionCriteria.split("\n") : [],
-    clave: "",
+    clave: key_formatter(data.title),
     individualSale: data.individualSale === "Si" ? true : false,
     gender: data.gender,
     productSat: data.productSat ? "Servicios de laboratorios de análisis de sangre" : "",
